@@ -22,4 +22,6 @@ jobs:
           pip install -r requirements.txt
       - name: Run linting
         run: ruff check . 
+      - name: Check formatting
+        run: ruff format --check .
         
