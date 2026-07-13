@@ -24,4 +24,7 @@ jobs:
         run: ruff check . 
       - name: Check formatting
         run: ruff format --check .
-        
+      - name: Run Unit Tests
+        run: pytest -v
+      - name: Run Unit Coverage
+        run: pytest --cov=app --cov-report=term-missing
