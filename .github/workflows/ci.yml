@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
@@ -24,7 +24,7 @@ jobs:
         run: ruff check . 
       - name: Check formatting
         run: ruff format --check .
-      - name: Run Unit Tests
+      - name: Run Unit and API Tests
         run: pytest -v
       - name: Run Unit Coverage
-        run: pytest --cov=app --cov-report=term-missing
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=95
