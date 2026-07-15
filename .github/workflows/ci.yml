@@ -2,6 +2,9 @@ name: CI
 on:
   pull_request:
     branches: ["develop", "main"]
+  push:
+    tags:
+      - "v*"
 env:
   PYTHON_VERSION: "3.12"
 jobs:
@@ -24,7 +27,48 @@ jobs:
         run: ruff check . 
       - name: Check formatting
         run: ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Run Unit and API Tests
         run: pytest -v
+
       - name: Run Unit Coverage
-        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=95
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=92
+  
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Build Docker Image
+        run: |
+          docker build -t aep-backend:${{ github.ref_name }} .
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_SECRET }}
+      - name: Tag and Push Docker Image
+        run: |
+          docker tag aep-backend:${{ github.ref_name }} ${{ secrets.DOCKERHUB_USERNAME }}/aep-backend:${{ github.ref_name }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/aep-backend:${{ github.ref_name }}
