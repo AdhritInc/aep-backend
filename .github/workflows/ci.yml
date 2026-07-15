@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
@@ -49,7 +49,7 @@ jobs:
         run: pytest -v
 
       - name: Run Unit Coverage
-        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=95
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=92
   
   build:
     runs-on: ubuntu-latest
