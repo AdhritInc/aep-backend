@@ -9,7 +9,7 @@ env:
   PYTHON_VERSION: "3.12"
 jobs:
   lint:
-    if: false 
+    #if: false 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,7 +32,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: lint
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -53,25 +52,21 @@ jobs:
         run: pytest -v
 
       - name: Run Unit Coverage
-        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=92
+        run: pytest --cov=app --cov-report=term-missing --cov-report=xml --cov-fail-under=92
         
   code-quality:
     runs-on: ubuntu-latest
-    #needs: test
+    needs: test
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with: 
           fetch-depth: 0
-      - name: Sonarqube Source Scan Action
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
-          SONAR_HOST_URL: https://sonarcloud.io
+      
 
 
   build-push:
-    if: false
+    #if: false
     runs-on: ubuntu-latest
     needs: code-quality
     steps:
@@ -79,7 +74,7 @@ jobs:
         uses: actions/checkout@v6
       - name: Build Docker Image
         run: |
-          docker build -t aep-backend:${{ github.ref_name }} .
+          docker build -t aep-backend:${{ github.run_number }} .
       - name: Docker Login
         uses: docker/login-action@v4
         with:
@@ -89,5 +84,5 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
-          docker tag aep-backend:${{ github.ref_name }} $DOCKER_USERNAME/aep-backend:${{ github.ref_name }}
-          docker push $DOCKER_USERNAME/aep-backend:${{ github.ref_name }}
+          docker tag aep-backend:${{ github.run_number }} $DOCKER_USERNAME/aep-backend:${{ github.run_number }}
+          docker push $DOCKER_USERNAME/aep-backend:${{ github.run_number }}
