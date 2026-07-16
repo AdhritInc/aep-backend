@@ -87,5 +87,3 @@ jobs:
         run: |
           docker tag aep-backend:${{ github.ref_name }} ${{ secrets.DOCKERHUB_USERNAME }}/aep-backend:${{ github.ref_name }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/aep-backend:${{ github.ref_name }}
-
-      
