@@ -67,6 +67,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
           SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_ORGANIZATION: adhritinc
+          SONAR_PROJECT_KEY: AdhritInc_aep-backend
 
 
   build-push:
