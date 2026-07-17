@@ -51,7 +51,7 @@ jobs:
       - name: Run Unit and API Tests
         run: pytest -v
 
-      - name: Run Unit Coverage
+      - name: Run Coverage Coverage
         run: pytest --cov=app --cov-report=term-missing --cov-report=xml --cov-fail-under=92
         
   code-quality:
@@ -62,7 +62,10 @@ jobs:
         uses: actions/checkout@v6
         with: 
           fetch-depth: 0
-      
+      - name: Sonarqube Source Scan Action 
+        uses: SonarSource/sonarqube-scan-action@v6 
+        env: SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}} 
+        SONAR_HOST_URL: https://sonarcloud.io
 
 
   build-push:
