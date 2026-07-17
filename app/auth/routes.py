@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
@@ -40,7 +41,7 @@ async def register(data: UserRegister):
 
 @router.post("/login")
 async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ):
     user = fake_users_db.get(form_data.username)
 
@@ -71,7 +72,7 @@ async def login(
 
 @router.get("/me")
 async def get_me(
-    token: str = Depends(oauth2_scheme),
+    token: Annotated[str, Depends(oauth2_scheme)],
 ):
     payload = verify_access_token(token)
 
