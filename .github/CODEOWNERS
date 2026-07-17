@@ -1,0 +1,13 @@
+* @AdhritInc
+
+# Backend
+/backend/ @backend-dev @JohnDoe
+
+# Frontend
+/frontend/ @frontend-dev @JohnDoe
+
+# Documentation
+/docs/ @tech-writer @JohnDoe
+
+# GitHub Workflows
+/.github/ @platform-engineer @JohnDoe
