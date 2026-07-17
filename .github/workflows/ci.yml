@@ -62,6 +62,11 @@ jobs:
         uses: actions/checkout@v6
         with: 
           fetch-depth: 0
+      - name: Debug Working Directory
+        run: |
+          pwd
+          ls -la
+          cat sonar-project.properties
       - name: Sonarqube Source Scan Action 
         uses: SonarSource/sonarqube-scan-action@v6 
         env: 
