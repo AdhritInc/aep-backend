@@ -64,8 +64,9 @@ jobs:
           fetch-depth: 0
       - name: Sonarqube Source Scan Action 
         uses: SonarSource/sonarqube-scan-action@v6 
-        env: SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}} 
-        SONAR_HOST_URL: https://sonarcloud.io
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}} 
+          SONAR_HOST_URL: https://sonarcloud.io
 
 
   build-push:
