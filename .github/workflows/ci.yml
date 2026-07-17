@@ -89,7 +89,7 @@ jobs:
     needs: code-quality
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - name: Build Docker Image
         run: |
           docker build -t aep-backend:${{ github.run_number }} .
