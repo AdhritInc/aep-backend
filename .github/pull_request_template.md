@@ -20,7 +20,6 @@ Describe the purpose of this pull request.
 - [ ] Unit Tests
 - [ ] Integration Tests
 - [ ] Manual Testing
-
 ---
 
 ## Checklist
